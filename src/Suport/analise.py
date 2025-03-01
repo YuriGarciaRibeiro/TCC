@@ -19,7 +19,5 @@ for raiz, _, arquivos in os.walk(input_dir, topdown=False):
             
             subprocess.run(command, cwd=raiz, check=True)
             
-            print('================================================================================')
-            input('salve')
-
+            
 print("Processamento concluído.")

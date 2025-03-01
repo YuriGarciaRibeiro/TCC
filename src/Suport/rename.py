@@ -1,6 +1,7 @@
 
 
 import os
+from Suport.constants import *
 
 """
 Modality (01 = full-AV, 02 = video-only, 03 = audio-only).
@@ -14,44 +15,6 @@ Actor (01 to 24. Odd numbered actors are male, even numbered actors are female).
 
 
 pasta_principal = ''
-
-modalities = {
-    '01': 'full-AV',
-    '02': 'video-only',
-    '03': 'audio-only'
-}
-
-
-vocal_channel = {
-    '01': 'speech',
-    '02': 'song'
-}
-
-emotions = {
-    '01': 'neutral',
-    '02': 'calm',
-    '03': 'happy',
-    '04': 'sad',
-    '05': 'angry',
-    '06': 'fearful',
-    '07': 'disgust',
-    '08': 'surprised'
-}
-
-emotional_intensity = {
-    '01': 'normal',
-    '02': 'strong'
-}
-
-statement = {
-    '01': 'Kids are talking by the door',
-    '02': 'Dogs are sitting by the door'
-}
-
-repetition = {
-    '01': '1st repetition',
-    '02': '2nd repetition'
-}
 
 def renomear_videos(pasta):
     for raiz, _, arquivos in os.walk(pasta, topdown=False):
