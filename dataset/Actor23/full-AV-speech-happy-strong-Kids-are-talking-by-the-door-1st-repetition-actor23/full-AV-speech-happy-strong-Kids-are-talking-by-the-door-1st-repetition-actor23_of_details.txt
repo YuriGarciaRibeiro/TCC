@@ -1,0 +1,13 @@
+Input:/input/Actor23/full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23.mp4
+Input full path:/input/Actor23/full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23.mp4
+Camera parameters:875,875,640,360
+Output HOG:full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23.hog
+Output video:full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23.avi
+Output aligned directory:full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23_aligned
+Output csv:full-AV-speech-happy-strong-Kids-are-talking-by-the-door-1st-repetition-actor23.csv
+Gaze: 1
+AUs: 1
+Landmarks 2D: 1
+Landmarks 3D: 1
+Pose: 1
+Shape parameters: 1

@@ -1,0 +1,13 @@
+Input:/input/Actor21/full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21.mp4
+Input full path:/input/Actor21/full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21.mp4
+Camera parameters:875,875,640,360
+Output HOG:full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21.hog
+Output video:full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21.avi
+Output aligned directory:full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21_aligned
+Output csv:full-AV-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor21.csv
+Gaze: 1
+AUs: 1
+Landmarks 2D: 1
+Landmarks 3D: 1
+Pose: 1
+Shape parameters: 1
