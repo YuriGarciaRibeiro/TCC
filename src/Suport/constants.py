@@ -5,16 +5,11 @@ modalities = {
 }
 
 
-
 vocal_channel = {
     '01': 'speech',
     '02': 'song'
 }
 
-
-"01" "01" "03" "02" "01" "01"
-
-"01" "01" "05" "02" "01" "01"
 
 emotions = {
     '01': 'neutral',
