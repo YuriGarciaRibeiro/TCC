@@ -19,7 +19,7 @@ pasta_principal = ''
 def renomear_videos(pasta):
     for raiz, _, arquivos in os.walk(pasta, topdown=False):
         for arquivo in arquivos:
-            if arquivo.startswith('01') or arquivo.startswith('02'):
+            if arquivo.startswith('01') or arquivo.startswith('03'):
                 novo_nome = ''
                 partes = arquivo.split('-')
                 novo_nome += modalities.get(partes[0])

@@ -2,8 +2,8 @@ import os
 import subprocess
 from time import sleep
 
-input_dir = os.path.expanduser('')
-output_dir = os.path.expanduser('')
+input_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/input/')
+output_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/output/')
  
 for raiz, _, arquivos in os.walk(input_dir, topdown=False):
     for video in arquivos[::-1]:
@@ -14,7 +14,7 @@ for raiz, _, arquivos in os.walk(input_dir, topdown=False):
             
             command = [
                 'docker', 'exec', '-it', 'openface', '/bin/bash', '-c',
-                f'build/bin/FeatureExtraction -f {arquivo} -out_dir /output/{pasta}/{video}'
+                f'build/bin/FeatureExtraction -f {arquivo} -out_dir /output/{pasta}/{video.replace(".mp4", "")}'
             ]
             
             subprocess.run(command, cwd=raiz, check=True)
