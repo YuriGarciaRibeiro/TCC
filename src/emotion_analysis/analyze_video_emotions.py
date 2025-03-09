@@ -1,8 +1,10 @@
 import os
+import re
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from emotion_aus import emotions_au
+from matplotlib import gridspec
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 from PIL import Image
 
@@ -20,6 +22,17 @@ def list_all_files_in_directory(directory_path):
             )  # Adiciona o caminho completo do arquivo
 
     return all_files
+
+
+def break_string(s):
+    # Using regex to capture parts with "phrase" instead of "action"
+    pattern = r"(?P<type>full-AV-speech)-(?P<emotion>\w+)-(?P<intensity>\w+)-(?P<phrase>[\w\s-]+)-(?P<repetition>\d+[a-zA-Z-]+)-(?P<actor>actor\d+)"
+
+    result = re.match(pattern, s)
+    if result:
+        return result.groupdict()
+    else:
+        return None
 
 
 # Função para analisar as emoções em um vídeo
@@ -76,11 +89,17 @@ def analyze_video_emotions(video_path, threshold=0.6):
     dominant_emotion_video = max(emotion_counts, key=emotion_counts.get)
 
     # Tamanho da figura
-    plt.figure(figsize=(16, 6))  # Ajuste o tamanho conforme necessário
+    fig = plt.figure(figsize=(16, 10))  # Ajuste o tamanho para acomodar a tabela
+    gs = gridspec.GridSpec(
+        2, 2, width_ratios=[1, 1], height_ratios=[2, 1]
+    )  # Define proporções
 
-    # Cria uma grade de subplots: 1 linha, 2 colunas
-    ax1 = plt.subplot(1, 2, 1)  # Subplot para o gráfico de barras
-    ax2 = plt.subplot(1, 2, 2)  # Subplot para a imagem do frame
+    # Subplot para o gráfico de barras
+    ax1 = plt.subplot(gs[0, 0])
+    # Subplot para a imagem do frame
+    ax2 = plt.subplot(gs[0, 1])
+    # Subplot para a tabela (abaixo da imagem)
+    ax3 = plt.subplot(gs[1, 0])  # A tabela ocupa toda a largura da segunda linha
 
     # Título geral da figura
     video_name = os.path.basename(video_path)
@@ -130,23 +149,35 @@ def analyze_video_emotions(video_path, threshold=0.6):
     # Remove os eixos do subplot da imagem
     ax2.axis("off")
 
+    data = break_string(video_name)
+
+    # Cria a tabela no terceiro subplot
+    cell_text = [[key, value] for key, value in data.items()]
+    table = ax3.table(
+        cellText=cell_text, colLabels=["Chave", "Valor"], loc="center", cellLoc="center"
+    )
+
+    # Ajusta o estilo da tabela
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)  # Tamanho da fonte
+    table.scale(1, 1.5)  # Ajusta a escala da tabela (largura, altura)
+
+    # Remove os eixos do subplot da tabela
+    ax3.axis("off")
+
     # Ajusta o layout para evitar cortes
     plt.tight_layout()
 
     # Salva a figura
-    # verifique se a pasta 'graphs' existe, se não, crie
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
-    # verifica se a pasta do ator existe, se não, cria
     if not os.path.exists(f"graphs/{video_name.replace('.csv','').split('-')[-1]}"):
         os.makedirs(f"graphs/{video_name.replace('.csv','').split('-')[-1]}")
 
     plt.savefig(
         f"graphs/{video_name.replace('.csv','').split('-')[-1]}/{video_name.replace('.csv', '')}.png"
     )
-    plt.close()  # Fecha a figura
-    # Exibe o gráfico
-    # plt.show()
+    plt.close()
 
 
 if __name__ == "__main__":
