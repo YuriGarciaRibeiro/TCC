@@ -24,7 +24,7 @@ def break_string(s):
     else:
         return None
 
-def analyze_video_emotions(video_path, threshold=0.6):
+def analyze_video_emotions(video_path, threshold=2):
     df = pd.read_csv(video_path)
     filtered_df = df[[col for col in df.columns if col.startswith(" AU") and col.endswith("r")]]
     frame_emotions = {}
@@ -44,7 +44,7 @@ def analyze_video_emotions(video_path, threshold=0.6):
         if emotion_sums[dominant_emotion] > emotion_sums.get(dominant_frame, 0):
             dominant_frame = idx
 
-    dominant_frame_path = f"{video_path.replace('.csv', '')}_aligned/frame_det_00_{str(dominant_frame).zfill(6)}.bmp"
+    dominant_frame_path = f"{video_path.replace('.csv', '')}_aligned/frame_det_00_{str(dominant_frame+1).zfill(6)}.bmp"
     dominant_emotion_video = max(emotion_counts, key=emotion_counts.get)
     video_name = os.path.basename(video_path)
     data = break_string(video_name)
@@ -69,5 +69,5 @@ if __name__ == "__main__":
     # Rodar a função para cada arquivo de vídeo (CSV)
     for video in video_files:
         if video.endswith(".csv"):  # Verifique se o arquivo é CSV
-            analysis_result = analyze_video_emotions(video)
+            analysis_result = analyze_video_emotions(video, threshold=0.7)  # Analisa o vídeo
             generate_plot(analysis_result,"AEPA")  # Gera o plot com os dados analisados

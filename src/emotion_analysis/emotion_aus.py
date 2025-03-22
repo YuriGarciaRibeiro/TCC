@@ -8,3 +8,12 @@ emotions_au = {
     #"Contempt": [12,14]
 }
 
+EMOTION_TEMPLATES = {
+    "Happiness": ["AU6", "AU12"],
+    "Sadness": ["AU1", "AU4", "AU15"],
+    "Surprise": ["AU1", "AU2", "AU5", "AU26"],
+    "Fear": ["AU1", "AU2", "AU4", "AU5", "AU7", "AU20", "AU26"],
+    "Anger": ["AU4", "AU5", "AU7", "AU23"],
+    "Disgust": ["AU9", "AU15", "AU16"]
+    #"Contempt": ["AU12", "AU14"]
+}
