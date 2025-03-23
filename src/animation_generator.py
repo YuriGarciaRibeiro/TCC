@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from pprint import pprint
 
 import py_audio2face as pya2f
 
@@ -18,7 +19,7 @@ def process_audio_files(directory):
                 output_path = (
                     os.path.splitext(audio_file_path)[0] + "_animation" + ".usd"
                 )
-
+                a2f.a2e_set_settings(a2e_emotion_strength=1)
                 # Executa a função a2f.audio2face_single
                 final_path = a2f.audio2face_single(
                     audio_file_path=audio_file_path,
@@ -27,6 +28,8 @@ def process_audio_files(directory):
                     emotion_auto_detect=True,
                 )
                 print(f"Processed: {audio_file_path} -> {final_path}")
+    a2f.shutdown_a2f()
+
 
 # Substitua 'your_directory_path' pelo caminho da pasta que você deseja processar
 directory_path = r"C:\Users\yurig\Documents\GitHub\TCC\dataset"
