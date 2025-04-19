@@ -39,4 +39,4 @@ def copiar_arquivos(origem, destino, extensao=None):
 if __name__ == "__main__":
     origem = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/src"
     destino = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/teste"
-    copiar_arquivos(origem, destino)
+    copiar_arquivos(origem, destino, "py")

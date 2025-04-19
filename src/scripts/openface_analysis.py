@@ -3,31 +3,33 @@ import shutil
 import subprocess
 from time import sleep
 
-input_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/input')
-output_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/output')
- 
- 
-for raiz, _, arquivos in os.walk(input_dir, topdown=False):
-    print(f"{arquivos[::-1]}")
-    for video in arquivos[::-1]:
+input_directory = os.path.expanduser(
+    '/Users/yurigarciaribeiro/Documents/TCC/DockerC/input')
+output_directory = os.path.expanduser(
+    '/Users/yurigarciaribeiro/Documents/TCC/DockerC/output')
+
+for root, _, files in os.walk(input_directory, topdown=False):
+    print(f"{files[::-1]}")
+    for video in files[::-1]:
         if video.endswith('.mp4'):
-            video_dir = os.path.join(raiz, video)
-            pasta = raiz.split('/')[-1]
-            arquivo = '/input/' + pasta + '/' + video
-            
+            video_path = os.path.join(root, video)
+            folder_name = root.split('/')[-1]
+            docker_input_path = '/input/' + folder_name + '/' + video
+
             command = [
                 'docker', 'exec', '-it', 'openface', '/bin/bash', '-c',
-                f'build/bin/FeatureExtraction -f {arquivo} -out_dir /output/{pasta}/{video.replace(".mp4", "")}'
+                f'build/bin/FeatureExtraction -f {docker_input_path} -out_dir /output/{folder_name}/{video.replace(".mp4", "")}'
             ]
-            
-            subprocess.run(command, cwd=raiz, check=True)
-            
-            # copa o arquivo para a pasta de saída
-            shutil.copy2(os.path.join(raiz, video), os.path.join(output_dir, raiz.split('/')[-1], video))
-            print(f"Arquivo {video} copiado para a pasta de saída")
+
+            subprocess.run(command, cwd=root, check=True)
+
+            shutil.copy2(os.path.join(root, video), os.path.join(
+                output_directory, root.split('/')[-1], video))
+            print(f"File {video} copied to output folder")
+
         elif video.endswith('.wav'):
-            #copia o arquivo para a pasta de saída
-            shutil.copy2(os.path.join(raiz, video), os.path.join(output_dir, raiz.split('/')[-1], video))
-            print(f"Arquivo {video} copiado para a pasta de saída")
-            
-print("Processamento concluído.")
+            shutil.copy2(os.path.join(root, video), os.path.join(
+                output_directory, root.split('/')[-1], video))
+            print(f"File {video} copied to output folder")
+
+print("Processing completed.")

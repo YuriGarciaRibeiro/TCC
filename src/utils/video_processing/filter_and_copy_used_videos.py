@@ -3,9 +3,7 @@ import shutil
 
 modalities = {"01": "full-AV", "02": "video-only", "03": "audio-only"}
 
-
 vocal_channel = {"01": "speech", "02": "song"}
-
 
 emotions = {
     "01": "neutral",
@@ -20,46 +18,47 @@ emotions = {
 
 emotional_intensity = {"01": "normal", "02": "strong"}
 
-statement = {"01": "Kids are talking by the door", "02": "Dogs are sitting by the door"}
+statements = {
+    "01": "Kids are talking by the door",
+    "02": "Dogs are sitting by the door"
+}
 
-repetition = {"01": "1st repetition", "02": "2nd repetition"}
+repetitions = {"01": "1st repetition", "02": "2nd repetition"}
 
+base_path = "C:/Users/yurig/Documents/GitHub/TCC/Dataset"
 
-url_base = "C:/Users/yurig/Documents/GitHub/TCC/Dataset"
-
-# Lista de composições
-composicoes = [
-    ["01", "01", "03", "02", "01", "01"],  # Composição 1 (mp4)
-    ["01", "01", "05", "02", "01", "01"],  # Composição 2 (mp4)
-    ["03", "01", "03", "02", "01", "01"],  # Composição 3 (wav)
-    ["03", "01", "05", "02", "01", "01"],  # Composição 4 (wav)
+# List of file compositions
+compositions = [
+    ["01", "01", "03", "02", "01", "01"],  # Composition 1 (mp4)
+    ["01", "01", "05", "02", "01", "01"],  # Composition 2 (mp4)
+    ["03", "01", "03", "02", "01", "01"],  # Composition 3 (wav)
+    ["03", "01", "05", "02", "01", "01"],  # Composition 4 (wav)
 ]
 
-# Loop de 1 a 24
+# Loop through actors 1 to 24
 for i in range(1, 25):
-    # Adiciona zero à esquerda para números menores que 10
-    if i < 10:
-        i = f"0{i}"
+    actor_id = f"{i:02}"
+    actor_folder = f"Actor{actor_id}"
+    destination_folder = os.path.join(
+        "C:/Users/yurig/Documents/GitHub/TCC/filtered", actor_folder)
 
-    pasta_destino = f"C:/Users/yurig/Documents/GitHub/TCC/filtrado/Actor{i}"
-    nome_pasta = f"Actor{i}"
+    # Create actor folder if it doesn't exist
+    if not os.path.exists(destination_folder):
+        os.mkdir(destination_folder)
 
-    # Cria a pasta do ator se não existir
-    if not os.path.exists(pasta_destino):
-        os.mkdir(pasta_destino)
+    for composition in compositions:
+        extension = ".wav" if composition[0] == "03" else ".mp4"
 
-    # Itera sobre as composições
-    for composicao in composicoes:
-        # Determina a extensão do arquivo com base no primeiro número da composição
-        extensao = ".wav" if composicao[0] == "03" else ".mp4"
+        file_name = (
+            f"{modalities[composition[0]]}-{vocal_channel[composition[1]]}-"
+            f"{emotions[composition[2]]}-{emotional_intensity[composition[3]]}-"
+            f"{statements[composition[4]].replace(' ', '-')}-"
+            f"{repetitions[composition[5]].replace(' ', '-')}-actor{actor_id}{extension}"
+        )
 
-        # Gera o nome do arquivo com base na composição atual
-        nome_arquivo = f"{modalities[composicao[0]]}-{vocal_channel[composicao[1]]}-{emotions[composicao[2]]}-{emotional_intensity[composicao[3]]}-{statement[composicao[4]]}-{repetition[composicao[5]]}-actor{i}{extensao}"
+        source_path = os.path.join(
+            base_path, actor_folder, file_name).replace(" ", "-")
 
-        caminho_pasta = os.path.join(url_base, nome_pasta)
-        caminho_arquivo = os.path.join(caminho_pasta, nome_arquivo).replace(" ", "-")
-
-        # Verifica se o arquivo existe e copia para a pasta de destino
-        if os.path.exists(caminho_arquivo):
-            print(f"Arquivo {nome_arquivo} encontrado")
-            shutil.copy(caminho_arquivo, pasta_destino)
+        if os.path.exists(source_path):
+            print(f"Found file: {file_name}")
+            shutil.copy(source_path, destination_folder)
