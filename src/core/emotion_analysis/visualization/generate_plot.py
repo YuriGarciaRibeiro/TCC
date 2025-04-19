@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
@@ -35,6 +36,8 @@ def generate_plot(analysis_result,sufix = ""):
     ax2.text(0.5, 1.05, f"Frame com maior expressão emocional: {dominant_frame}", horizontalalignment="center", verticalalignment="center", transform=ax2.transAxes, fontsize=12, color="green")
     ax2.axis("off")
 
+    pprint(data)
+    
     cell_text = [[key, value] for key, value in data.items()]
     table = ax3.table(cellText=cell_text, colLabels=["Chave", "Valor"], loc="center", cellLoc="center")
     table.auto_set_font_size(False)

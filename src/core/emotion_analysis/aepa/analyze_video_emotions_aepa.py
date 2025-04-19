@@ -3,10 +3,14 @@
 # ? AEPA
 
 import os
+from pprint import pprint
 import re
+
 import pandas as pd
-from emotion_aus import emotions_au
-from generate_plot import generate_plot  # Importa a função de geração do plot
+
+from core.emotion_analysis.emotion_aus import emotions_au
+from core.emotion_analysis.visualization import generate_plot
+
 
 def list_all_files_in_directory(directory_path):
     all_files = []
@@ -16,17 +20,43 @@ def list_all_files_in_directory(directory_path):
                 all_files.append(os.path.join(root, file))
     return all_files
 
+
+import re
+
 def break_string(s):
-    pattern = r"(?P<type>full-AV-speech)-(?P<emotion>\w+)-(?P<intensity>\w+)-(?P<phrase>[\w\s-]+)-(?P<repetition>\d+[a-zA-Z-]+)-(?P<actor>actor\d+)"
-    result = re.match(pattern, s)
-    if result:
-        return result.groupdict()
-    else:
-        return None
+    pattern = (
+        r"^"
+        # tipo: full‑AV‑speech ou audio‑only‑speech
+        r"(?P<type>full-AV-speech|audio-only-speech)"
+        r"-"
+        # emoção, intensidade
+        r"(?P<emotion>\w+)"
+        r"-"
+        r"(?P<intensity>\w+)"
+        r"-"
+        # frase (somente letras, dígitos e hifens)
+        r"(?P<phrase>[\w-]+)"
+        r"-"
+        # repetição (ex: 1st-repetition)
+        r"(?P<repetition>\d+[A-Za-z-]+)"
+        r"-"
+        # ator
+        r"(?P<actor>actor\d+)"
+        # sufixo _animated opcional
+        r"(?:_animated)?"
+        # extensão .csv opcional
+        r"(?:\.csv)?"
+        r"$"
+    )
+    m = re.match(pattern, s)
+    return m.groupdict() if m else None
+
+
 
 def analyze_video_emotions(video_path, threshold=2):
     df = pd.read_csv(video_path)
-    filtered_df = df[[col for col in df.columns if col.startswith(" AU") and col.endswith("r")]]
+    filtered_df = df[[col for col in df.columns if col.startswith(
+        " AU") and col.endswith("r")]]
     frame_emotions = {}
     emotion_counts = {emotion: 0 for emotion in emotions_au}
     dominant_frame = 0
@@ -47,6 +77,7 @@ def analyze_video_emotions(video_path, threshold=2):
     dominant_frame_path = f"{video_path.replace('.csv', '')}_aligned/frame_det_00_{str(dominant_frame+1).zfill(6)}.bmp"
     dominant_emotion_video = max(emotion_counts, key=emotion_counts.get)
     video_name = os.path.basename(video_path)
+    print(f"Video: {video_name}")
     data = break_string(video_name)
 
     # Retorna os dados para o plot
@@ -59,6 +90,7 @@ def analyze_video_emotions(video_path, threshold=2):
         "data": data
     }
 
+
 if __name__ == "__main__":
     # Caminho da pasta onde estão os vídeos
     video_directory = "/Users/yurigarciaribeiro/Documents/GitHub/TCC/dataset"
@@ -69,5 +101,9 @@ if __name__ == "__main__":
     # Rodar a função para cada arquivo de vídeo (CSV)
     for video in video_files:
         if video.endswith(".csv"):  # Verifique se o arquivo é CSV
-            analysis_result = analyze_video_emotions(video, threshold=0.7)  # Analisa o vídeo
-            generate_plot(analysis_result,"AEPA")  # Gera o plot com os dados analisados
+            analysis_result = analyze_video_emotions(
+                video, threshold=0.7)  # Analisa o vídeo
+            
+            pprint(analysis_result)
+            # Gera o plot com os dados analisados
+            generate_plot.generate_plot(analysis_result, "AEPA")
