@@ -9,7 +9,7 @@ import re
 import pandas as pd
 
 from core.emotion_analysis.emotion_aus import emotions_au
-from core.emotion_analysis.visualization import generate_plot
+from core.emotion_analysis.visualization import generate_AEPA_plot
 
 
 def list_all_files_in_directory(directory_path):
@@ -106,4 +106,4 @@ if __name__ == "__main__":
             
             pprint(analysis_result)
             # Gera o plot com os dados analisados
-            generate_plot.generate_plot(analysis_result, "AEPA")
+            generate_AEPA_plot.generate_plot(analysis_result, "AEPA")

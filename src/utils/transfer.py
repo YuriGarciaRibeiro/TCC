@@ -10,12 +10,16 @@ def copiar_arquivos(origem, destino, extensao=None):
     :param destino: Caminho da pasta de destino
     :param extensao: Extensão dos arquivos a copiar (sem ponto, ex: 'usd'). Se None, copia todos os arquivos.
     """
+    
     if not os.path.exists(destino):
         os.makedirs(destino)
 
     for raiz, _, arquivos in os.walk(origem):
+        print(f"Processando diretório: {raiz}")
         for arquivo in arquivos:
+            print(f"Arquivo: {arquivo}")
             if extensao is None or arquivo.lower().endswith(f".{extensao.lower()}"):
+                print(f"Copiando {arquivo}...")
                 caminho_origem = os.path.join(raiz, arquivo)
                 caminho_destino = os.path.join(destino, arquivo)
 
@@ -33,6 +37,6 @@ def copiar_arquivos(origem, destino, extensao=None):
 
 
 if __name__ == "__main__":
-    origem = r"C:\Users\yurig\Documents\GitHub\TCC\dataset"
-    destino = r"C:\Users\yurig\Documents\GitHub\TCC\animations"
-    copiar_arquivos(origem, destino, extensao="usd")
+    origem = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/src"
+    destino = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/teste"
+    copiar_arquivos(origem, destino)
