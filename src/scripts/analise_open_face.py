@@ -3,10 +3,12 @@ import shutil
 import subprocess
 from time import sleep
 
-input_dir = os.path.expanduser('C:/Users/yurig/Documents/TCC/DockerC/input/')
-output_dir = os.path.expanduser('C:/Users/yurig/Documents/TCC/DockerC/output/')
+input_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/input')
+output_dir = os.path.expanduser('/Users/yurigarciaribeiro/Documents/TCC/DockerC/output')
+ 
  
 for raiz, _, arquivos in os.walk(input_dir, topdown=False):
+    print(f"{arquivos[::-1]}")
     for video in arquivos[::-1]:
         if video.endswith('.mp4'):
             video_dir = os.path.join(raiz, video)

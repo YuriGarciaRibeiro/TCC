@@ -1,0 +1,13 @@
+Input:/input/Actor06/audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated.mp4
+Input full path:/input/Actor06/audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated.mp4
+Camera parameters:1312.5,1312.5,960,540
+Output HOG:audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated.hog
+Output video:audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated.avi
+Output aligned directory:audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated_aligned
+Output csv:audio-only-speech-angry-strong-Kids-are-talking-by-the-door-1st-repetition-actor06_animated.csv
+Gaze: 1
+AUs: 1
+Landmarks 2D: 1
+Landmarks 3D: 1
+Pose: 1
+Shape parameters: 1
