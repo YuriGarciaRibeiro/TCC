@@ -2,6 +2,8 @@ import os
 import re
 import shutil
 
+from config.constants import DATASET_DIR, VIDEOS_DIR
+
 
 def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".mp4"):
     """
@@ -9,10 +11,6 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".
     renomeando de *_animation_usd_bsweight.ext para *_animated.ext,
     e removendo no destino qualquer arquivo com sufixo _animation_usd_bsweight.ext
     nas pastas de ator.
-
-    :param src_root: Caminho da pasta de origem.
-    :param dst_root: Caminho da pasta de destino (com subpastas actor01, actor02...).
-    :param extension: Extensão a filtrar (ex: ".mp4"). Se for None, copia todos os arquivos.
     """
     pattern_actor = re.compile(r"(actor\d{2})", re.IGNORECASE)
     pattern_cleanup = re.compile(
@@ -54,6 +52,4 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".
 
 
 if __name__ == "__main__":
-    source_root = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/videos"
-    destination_root = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/dataset"
-    copy_and_rename_clean_dest(source_root, destination_root, extension=".mp4")
+    copy_and_rename_clean_dest(VIDEOS_DIR, DATASET_DIR, extension=".mp4")

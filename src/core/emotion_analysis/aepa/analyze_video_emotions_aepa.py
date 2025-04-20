@@ -8,7 +8,7 @@ import re
 
 import pandas as pd
 
-from core.emotion_analysis.emotion_aus import emotions_au
+from config.constants import emotions_au
 from core.emotion_analysis.visualization import generate_AEPA_plot
 
 

@@ -1,29 +1,10 @@
 import os
 import shutil
 
-modalities = {"01": "full-AV", "02": "video-only", "03": "audio-only"}
-
-vocal_channel = {"01": "speech", "02": "song"}
-
-emotions = {
-    "01": "neutral",
-    "02": "calm",
-    "03": "happy",
-    "04": "sad",
-    "05": "angry",
-    "06": "fearful",
-    "07": "disgust",
-    "08": "surprised",
-}
-
-emotional_intensity = {"01": "normal", "02": "strong"}
-
-statements = {
-    "01": "Kids are talking by the door",
-    "02": "Dogs are sitting by the door"
-}
-
-repetitions = {"01": "1st repetition", "02": "2nd repetition"}
+from config.constants import emotional_intensity, emotions, modalities
+from config.constants import repetition as repetitions
+from config.constants import statements
+from config.constants import vocal_channel
 
 base_path = "C:/Users/yurig/Documents/GitHub/TCC/Dataset"
 
@@ -42,7 +23,6 @@ for i in range(1, 25):
     destination_folder = os.path.join(
         "C:/Users/yurig/Documents/GitHub/TCC/filtered", actor_folder)
 
-    # Create actor folder if it doesn't exist
     if not os.path.exists(destination_folder):
         os.mkdir(destination_folder)
 

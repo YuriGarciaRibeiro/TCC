@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from config.constants import SRC_DIR, TEST_DIR
+
 
 def copiar_arquivos(origem, destino, extensao=None):
     """
@@ -8,9 +10,8 @@ def copiar_arquivos(origem, destino, extensao=None):
 
     :param origem: Caminho da pasta de origem
     :param destino: Caminho da pasta de destino
-    :param extensao: Extensão dos arquivos a copiar (sem ponto, ex: 'usd'). Se None, copia todos os arquivos.
+    :param extensao: Extensão dos arquivos a copiar (sem ponto, ex: 'py'). Se None, copia todos os arquivos.
     """
-    
     if not os.path.exists(destino):
         os.makedirs(destino)
 
@@ -37,6 +38,4 @@ def copiar_arquivos(origem, destino, extensao=None):
 
 
 if __name__ == "__main__":
-    origem = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/src"
-    destino = r"/Users/yurigarciaribeiro/Documents/GitHub/TCC/teste"
-    copiar_arquivos(origem, destino, "py")
+    copiar_arquivos(SRC_DIR, TEST_DIR, "py")
