@@ -1,9 +1,7 @@
 import os
 import shutil
 
-from config.constants import DATASET_DIR, DOCKER_INPUT_DIR
-
-EXTENSION = ".mp4"  # só copiará .mp4; coloque None para copiar todos
+from config.constants import DATASET_DIR, DOCKER_INPUT_DIR, VIDEO_EXTENSION
 
 
 def gather_dirs_with_matches(src_root: str, extension: str = None):
@@ -51,5 +49,9 @@ def copy_filtered_structure(src_root: str, dst_root: str, extension: str = None)
                     print(f"Copiado: {src_file} → {dst_file}")
 
 
+def main():
+    copy_filtered_structure(DATASET_DIR, DOCKER_INPUT_DIR, extension=VIDEO_EXTENSION)
+
+
 if __name__ == "__main__":
-    copy_filtered_structure(DATASET_DIR, DOCKER_INPUT_DIR, EXTENSION)
+    main()

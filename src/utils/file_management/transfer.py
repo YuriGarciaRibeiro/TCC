@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from config.constants import SRC_DIR, TEST_DIR
+from config.constants import SRC_DIR, TEST_DIR, VIDEO_EXTENSION
 
 
 def copiar_arquivos(origem, destino, extensao=None):
@@ -37,5 +37,9 @@ def copiar_arquivos(origem, destino, extensao=None):
                 print(f"Copiado: {caminho_origem} -> {caminho_destino}")
 
 
+def main():
+    copiar_arquivos(SRC_DIR, TEST_DIR, VIDEO_EXTENSION.strip("."))  # exemplo com .mp4
+
+
 if __name__ == "__main__":
-    copiar_arquivos(SRC_DIR, TEST_DIR, "py")
+    main()

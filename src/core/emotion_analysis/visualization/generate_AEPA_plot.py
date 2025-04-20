@@ -64,3 +64,14 @@ def generate_plot(analysis_result, sufix=""):
     save_path = save_dir / f"{video_name.replace('.csv', '')}_{sufix}.png"
     plt.savefig(save_path)
     plt.close()
+
+
+def main():
+    print("Este módulo define apenas a função 'generate_plot'.")
+    print("Use-o chamando diretamente generate_plot(...) a partir de outro script.")
+    # Exemplo comentado de uso:
+    # generate_plot(analysis_result_dict, "AEPA")
+
+
+if __name__ == "__main__":
+    main()

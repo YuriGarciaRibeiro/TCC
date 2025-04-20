@@ -12,6 +12,7 @@ def process_audio_files(directory):
     a2f = pya2f.Audio2Face()
     pprint(a2f.a2e_settings)
 
+    # Define configurações do Audio2Face
     a2f.a2e_set_settings(
         a2e_emotion_strength=1,
         a2e_max_emotions=6,
@@ -36,8 +37,13 @@ def process_audio_files(directory):
                     emotion_auto_detect=True,
                 )
                 print(f"Processed: {audio_file_path} -> {final_path}")
+
     a2f.shutdown_a2f()
 
 
+def main(directory=DATASET_DIR):
+    process_audio_files(directory)
+
+
 if __name__ == "__main__":
-    process_audio_files(DATASET_DIR)
+    main()

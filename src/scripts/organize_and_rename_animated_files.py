@@ -2,10 +2,10 @@ import os
 import re
 import shutil
 
-from config.constants import DATASET_DIR, VIDEOS_DIR
+from config.constants import DATASET_DIR, VIDEO_EXTENSION, VIDEOS_DIR
 
 
-def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".mp4"):
+def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VIDEO_EXTENSION):
     """
     Copia arquivos de src_root para dst_root organizando em subpastas por ator,
     renomeando de *_animation_usd_bsweight.ext para *_animated.ext,
@@ -23,7 +23,7 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".
 
             m = pattern_actor.search(filename)
             if not m:
-                print(f"[SKIP] não identificou ator em: {filename}")
+                print(f"[SKIP] Não identificou ator em: {filename}")
                 continue
             actor = m.group(1).lower()
 
@@ -51,5 +51,10 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = ".
             print(f"[COPIED] {src_file} → {dest_file}")
 
 
+def main():
+    copy_and_rename_clean_dest(
+        VIDEOS_DIR, DATASET_DIR, extension=VIDEO_EXTENSION)
+
+
 if __name__ == "__main__":
-    copy_and_rename_clean_dest(VIDEOS_DIR, DATASET_DIR, extension=".mp4")
+    main()
