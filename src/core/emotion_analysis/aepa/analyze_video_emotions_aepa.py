@@ -2,19 +2,9 @@ import os
 import re
 from pprint import pprint
 
-import pandas as pd
-
 from config.constants import DATASET_DIR, emotions_au
 from core.emotion_analysis.visualization import generate_AEPA_plot
-
-
-def list_all_files_in_directory(directory_path):
-    all_files = []
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            if file.endswith(".csv"):
-                all_files.append(os.path.join(root, file))
-    return all_files
+from utils.file_operations import list_files_by_extension, safe_read_csv
 
 
 def break_string(s):
@@ -40,8 +30,12 @@ def break_string(s):
 
 
 def analyze_video_emotions(video_path, threshold=2):
-    df = pd.read_csv(video_path)
-    filtered_df = df[[col for col in df.columns if col.startswith(" AU") and col.endswith("r")]]
+    df = safe_read_csv(video_path)
+    if df is None:
+        return None
+
+    filtered_df = df[[col for col in df.columns if col.startswith(
+        " AU") and col.endswith("r")]]
     frame_emotions = {}
     emotion_counts = {emotion: 0 for emotion in emotions_au}
     dominant_frame = 0
@@ -74,11 +68,11 @@ def analyze_video_emotions(video_path, threshold=2):
 
 
 def main(directory=DATASET_DIR, threshold=0.7):
-    video_files = list_all_files_in_directory(directory)
+    video_files = list_files_by_extension(directory, ".csv")
 
     for video in video_files:
-        if video.endswith(".csv"):
-            analysis_result = analyze_video_emotions(video, threshold=threshold)
+        analysis_result = analyze_video_emotions(video, threshold=threshold)
+        if analysis_result:
             pprint(analysis_result)
             generate_AEPA_plot.generate_plot(analysis_result, "AEPA")
 

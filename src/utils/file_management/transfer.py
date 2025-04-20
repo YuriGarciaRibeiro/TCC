@@ -1,7 +1,7 @@
 import os
-import shutil
 
 from config.constants import SRC_DIR, TEST_DIR, VIDEO_EXTENSION
+from utils.file_operations import safe_copy, safe_mkdir
 
 
 def copiar_arquivos(origem, destino, extensao=None):
@@ -12,8 +12,7 @@ def copiar_arquivos(origem, destino, extensao=None):
     :param destino: Caminho da pasta de destino
     :param extensao: Extensão dos arquivos a copiar (sem ponto, ex: 'py'). Se None, copia todos os arquivos.
     """
-    if not os.path.exists(destino):
-        os.makedirs(destino)
+    safe_mkdir(destino)
 
     for raiz, _, arquivos in os.walk(origem):
         print(f"Processando diretório: {raiz}")
@@ -33,7 +32,7 @@ def copiar_arquivos(origem, destino, extensao=None):
                     )
                     contador += 1
 
-                shutil.copy2(caminho_origem, caminho_destino)
+                safe_copy(caminho_origem, caminho_destino)
                 print(f"Copiado: {caminho_origem} -> {caminho_destino}")
 
 

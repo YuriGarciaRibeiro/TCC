@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
 from pprint import pprint
-from time import sleep
 
 import py_audio2face as pya2f
 
 from config.constants import DATASET_DIR, FPS_DEFAULT
+from utils.file_operations import list_files_by_extension
 
 
 def process_audio_files(directory):
@@ -23,20 +23,18 @@ def process_audio_files(directory):
 
     a2f.set_enable_auto_generate_on_track_change(True)
 
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith(".wav"):
-                audio_file_path = os.path.join(root, file)
-                output_path = os.path.splitext(audio_file_path)[
-                    0] + "_animation.usd"
+    audio_files = list_files_by_extension(directory, ".wav")
 
-                final_path = a2f.audio2face_single(
-                    audio_file_path=audio_file_path,
-                    output_path=output_path,
-                    fps=FPS_DEFAULT,
-                    emotion_auto_detect=True,
-                )
-                print(f"Processed: {audio_file_path} -> {final_path}")
+    for audio_file_path in audio_files:
+        output_path = os.path.splitext(audio_file_path)[0] + "_animation.usd"
+
+        final_path = a2f.audio2face_single(
+            audio_file_path=audio_file_path,
+            output_path=output_path,
+            fps=FPS_DEFAULT,
+            emotion_auto_detect=True,
+        )
+        print(f"Processed: {audio_file_path} -> {final_path}")
 
     a2f.shutdown_a2f()
 

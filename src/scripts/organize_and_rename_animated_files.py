@@ -1,8 +1,8 @@
 import os
 import re
-import shutil
 
-from config.constants import DATASET_DIR, VIDEO_EXTENSION, VIDEOS_DIR
+from config.constants import DATASET_DIR, VIDEOS_DIR, VIDEO_EXTENSION
+from utils.file_operations import safe_mkdir, safe_copy, normalize_filename
 
 
 def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VIDEO_EXTENSION):
@@ -13,8 +13,9 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
     nas pastas de ator.
     """
     pattern_actor = re.compile(r"(actor\d{2})", re.IGNORECASE)
-    pattern_cleanup = re.compile(
-        r"_animation_usd_bsweight(\.[^.]+)$", re.IGNORECASE)
+    pattern_cleanup = re.compile(r"_animation_usd_bsweight(\.[^.]+)$", re.IGNORECASE)
+    rename_pattern = r"(.*actor\d{2})_.*(\.[^.]+)$"
+    rename_replacement = r"\1_animated\2"
 
     for dirpath, _, filenames in os.walk(src_root):
         for filename in filenames:
@@ -29,7 +30,7 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
 
             src_file = os.path.join(dirpath, filename)
             dest_dir = os.path.join(dst_root, actor)
-            os.makedirs(dest_dir, exist_ok=True)
+            safe_mkdir(dest_dir)
 
             # Remove arquivos antigos no destino
             for existing in os.listdir(dest_dir):
@@ -39,21 +40,15 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
                     print(f"[CLEANED] {old_path}")
 
             # Renomeia para *_animated.ext
-            new_filename = re.sub(
-                r"(.*actor\d{2})_.*(\.[^.]+)$",
-                r"\1_animated\2",
-                filename,
-                flags=re.IGNORECASE
-            )
+            new_filename = normalize_filename(filename, rename_pattern, rename_replacement)
             dest_file = os.path.join(dest_dir, new_filename)
 
-            shutil.copy2(src_file, dest_file)
+            safe_copy(src_file, dest_file)
             print(f"[COPIED] {src_file} → {dest_file}")
 
 
 def main():
-    copy_and_rename_clean_dest(
-        VIDEOS_DIR, DATASET_DIR, extension=VIDEO_EXTENSION)
+    copy_and_rename_clean_dest(VIDEOS_DIR, DATASET_DIR, extension=VIDEO_EXTENSION)
 
 
 if __name__ == "__main__":
