@@ -1,4 +1,5 @@
 import os
+import logging
 from collections import defaultdict
 from pathlib import Path
 
@@ -8,6 +9,7 @@ import numpy as np
 from config.constants import DATASET_DIR, GRAPHS_DIR, TARGET_EMOTIONS
 from utils.file_operations import safe_read_csv
 
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 def extract_au_means(csv_path):
     df = safe_read_csv(csv_path)
@@ -17,7 +19,6 @@ def extract_au_means(csv_path):
     au_cols = [col for col in df.columns if col.startswith(" AU") and col.endswith("_r")]
     means = df[au_cols].mean().to_dict()
     return {col.strip(): val for col, val in means.items()}
-
 
 def generate_au_intensity_comparison():
     actor_files = defaultdict(lambda: defaultdict(lambda: {"real": None, "animated": None}))
@@ -45,14 +46,14 @@ def generate_au_intensity_comparison():
             cg_csv = emotion_dict[emotion]["animated"]
 
             if not real_csv or not cg_csv:
-                print(f"[!] Skipping {actor_key} - {emotion}: Missing real or animated CSV.")
+                logging.warning(f"[!] Skipping {actor_key} - {emotion}: Missing real or animated CSV.")
                 continue
 
             real_means = extract_au_means(real_csv)
             cg_means = extract_au_means(cg_csv)
 
             if not real_means or not cg_means:
-                print(f"[!] Skipping {actor_key} - {emotion}: Failed to load CSV.")
+                logging.warning(f"[!] Skipping {actor_key} - {emotion}: Failed to load CSV.")
                 continue
 
             aus = sorted(set(real_means.keys()).union(cg_means.keys()))
@@ -67,7 +68,7 @@ def generate_au_intensity_comparison():
             ax.bar(x + width / 2, cg_vals, width, label="CG (MetaHuman)")
 
             ax.set_ylabel("Intensidade Média dos AUs")
-            ax.set_title(f"{actor_key.upper()} - {emotion.capitalize()}: Comparação de AUs")
+            ax.set_title(f"{actor_key.upper()} - {emotion.capitalize()}: Comparacão de AUs")
             ax.set_xticks(x)
             ax.set_xticklabels(aus, rotation=45)
             ax.legend()
@@ -82,12 +83,10 @@ def generate_au_intensity_comparison():
             plt.savefig(output_dir / f"{filename}.svg")
             plt.close()
 
-            print(f"[✓] {actor_key} - {emotion} → {output_dir}")
-
+            logging.info(f"[✓] {actor_key} - {emotion} → {output_dir}")
 
 def main():
     generate_au_intensity_comparison()
-
 
 if __name__ == "__main__":
     main()

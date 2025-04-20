@@ -1,8 +1,12 @@
+import logging
 import os
 import re
 
-from config.constants import DATASET_DIR, VIDEOS_DIR, VIDEO_EXTENSION
-from utils.file_operations import safe_mkdir, safe_copy, normalize_filename
+from config.constants import DATASET_DIR, VIDEO_EXTENSION, VIDEOS_DIR
+from utils.file_operations import (normalize_filename, safe_copy,
+                                        safe_mkdir)
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 
 def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VIDEO_EXTENSION):
@@ -13,7 +17,8 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
     nas pastas de ator.
     """
     pattern_actor = re.compile(r"(actor\d{2})", re.IGNORECASE)
-    pattern_cleanup = re.compile(r"_animation_usd_bsweight(\.[^.]+)$", re.IGNORECASE)
+    pattern_cleanup = re.compile(
+        r"_animation_usd_bsweight(\.[^.]+)$", re.IGNORECASE)
     rename_pattern = r"(.*actor\d{2})_.*(\.[^.]+)$"
     rename_replacement = r"\1_animated\2"
 
@@ -24,7 +29,7 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
 
             m = pattern_actor.search(filename)
             if not m:
-                print(f"[SKIP] Não identificou ator em: {filename}")
+                logging.warning(f"[SKIP] Não identificou ator em: {filename}")
                 continue
             actor = m.group(1).lower()
 
@@ -37,18 +42,20 @@ def copy_and_rename_clean_dest(src_root: str, dst_root: str, extension: str = VI
                 if pattern_cleanup.search(existing):
                     old_path = os.path.join(dest_dir, existing)
                     os.remove(old_path)
-                    print(f"[CLEANED] {old_path}")
+                    logging.info(f"[CLEANED] {old_path}")
 
             # Renomeia para *_animated.ext
-            new_filename = normalize_filename(filename, rename_pattern, rename_replacement)
+            new_filename = normalize_filename(
+                filename, rename_pattern, rename_replacement)
             dest_file = os.path.join(dest_dir, new_filename)
 
             safe_copy(src_file, dest_file)
-            print(f"[COPIED] {src_file} → {dest_file}")
+            logging.info(f"[COPIED] {src_file} → {dest_file}")
 
 
 def main():
-    copy_and_rename_clean_dest(VIDEOS_DIR, DATASET_DIR, extension=VIDEO_EXTENSION)
+    copy_and_rename_clean_dest(
+        VIDEOS_DIR, DATASET_DIR, extension=VIDEO_EXTENSION)
 
 
 if __name__ == "__main__":

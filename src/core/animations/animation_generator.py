@@ -1,4 +1,5 @@
 import os
+import logging
 from pathlib import Path
 from pprint import pprint
 
@@ -7,6 +8,7 @@ import py_audio2face as pya2f
 from config.constants import DATASET_DIR, FPS_DEFAULT
 from utils.file_operations import list_files_by_extension
 
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 def process_audio_files(directory):
     a2f = pya2f.Audio2Face()
@@ -34,14 +36,12 @@ def process_audio_files(directory):
             fps=FPS_DEFAULT,
             emotion_auto_detect=True,
         )
-        print(f"Processed: {audio_file_path} -> {final_path}")
+        logging.info(f"Processed: {audio_file_path} -> {final_path}")
 
     a2f.shutdown_a2f()
 
-
 def main(directory=DATASET_DIR):
     process_audio_files(directory)
-
 
 if __name__ == "__main__":
     main()

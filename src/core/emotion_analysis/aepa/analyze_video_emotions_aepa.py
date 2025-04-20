@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from pprint import pprint
@@ -5,6 +6,8 @@ from pprint import pprint
 from config.constants import DATASET_DIR, emotions_au
 from core.emotion_analysis.visualization import generate_AEPA_plot
 from utils.file_operations import list_files_by_extension, safe_read_csv
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 
 def break_string(s):
@@ -73,7 +76,7 @@ def main(directory=DATASET_DIR, threshold=0.7):
     for video in video_files:
         analysis_result = analyze_video_emotions(video, threshold=threshold)
         if analysis_result:
-            pprint(analysis_result)
+            logging.info(f"Analisado: {analysis_result['video_name']}")
             generate_AEPA_plot.generate_plot(analysis_result, "AEPA")
 
 
