@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # === Diretórios base ===
-ROOT_DIR = Path("/Users/yurigarciaribeiro/Documents/GitHub/TCC")
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 SRC_DIR = ROOT_DIR / "src"
 TEST_DIR = ROOT_DIR / "teste"
@@ -11,8 +11,25 @@ DOCKER_OUTPUT_DIR = ROOT_DIR / "DockerC/output"
 VIDEOS_DIR = ROOT_DIR / "videos"
 GRAPHS_DIR = ROOT_DIR / "graphs"
 FILTERED_DIR = ROOT_DIR / "filtered"
-ANIMATION_DIR = Path(
-    "C:/Users/yurig/Documents/Unreal Projects/MyProject/Content/animation")  # pode ajustar
+ANIMATION_DIR = Path("C:/Users/yurig/Documents/Unreal Projects/MyProject/Content/animation")
+
+# === Mapeamento geral de diretórios (opcional) ===
+DIRS = {
+    "root": ROOT_DIR,
+    "src": SRC_DIR,
+    "test": TEST_DIR,
+    "dataset": DATASET_DIR,
+    "docker_input": DOCKER_INPUT_DIR,
+    "docker_output": DOCKER_OUTPUT_DIR,
+    "videos": VIDEOS_DIR,
+    "graphs": GRAPHS_DIR,
+    "filtered": FILTERED_DIR,
+    "animation": ANIMATION_DIR,
+}
+
+def print_all_paths():
+    for name, path in DIRS.items():
+        print(f"{name.upper():<15}: {path}")
 
 # === Thresholds ===
 AU_INTENSITY_THRESHOLD = 2
